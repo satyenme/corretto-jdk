@@ -67,8 +67,14 @@ task createTestImage(type: Exec) {
     commandLine 'make','test-image'
 }
 
+task buildAndRunGtest(type: Exec) {
+    dependsOn executeBuild
+    workingDir "$buildRoot"
+    commandLine 'make', 'run-test', 'TEST="gtest:all"'
+}
+
 task packageTestImage(type: Zip) {
-    dependsOn createTestImage
+    dependsOn buildAndRunGtest
     archiveFileName = "${project.correttoTestImageArchiveName}.zip"
     from(testResultingImage) {
         include '**'

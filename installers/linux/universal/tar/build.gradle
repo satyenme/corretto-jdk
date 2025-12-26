@@ -98,6 +98,12 @@ task createTestImage(type: Exec) {
     commandLine 'make','test-image'
 }
 
+task buildAndRunGtest(type: Exec) {
+    dependsOn createTestImage
+    workingDir "$buildRoot"
+    commandLine 'make', 'run-test', 'TEST="gtest:all"'
+}
+
 task bundleThirdPartyBinaries {
     dependsOn executeBuild
     doLast {
@@ -120,7 +126,7 @@ task bundleThirdPartyBinaries {
 }
 
 task fixCrossCompileLinking(type: Exec) {
-    dependsOn createTestImage
+    dependsOn buildAndRunGtest
     /* When cross-compiling for aarch64, gcc incorrectly links against
      * libz.so, provided by the -devel packages, instead of libz.so.1
      * This can lead to runtime errors of the form
