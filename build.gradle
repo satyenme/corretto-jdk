@@ -112,7 +112,7 @@ allprojects {
             correttoCommonFlags += ["--with-version-date=${versionDate}"]
         }
 
-        def gtest = project.findProperty("corretto.gtest")
+        gtest = project.findProperty("corretto.gtest")
         if (gtest) {
             correttoCommonFlags += ["--with-gtest=${gtest}"]
         }

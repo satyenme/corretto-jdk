@@ -67,14 +67,20 @@ task createTestImage(type: Exec) {
     commandLine 'make','test-image'
 }
 
-task buildAndRunGtest(type: Exec) {
+task runGtest {
     dependsOn executeBuild
-    workingDir "$buildRoot"
-    commandLine 'make', 'run-test', 'TEST="gtest:all"'
+    doLast {
+        if (project.gtest != "") {
+            exec {
+                workingDir "$buildRoot"
+                commandLine 'make', 'run-test', 'TEST="gtest:all"'
+            }
+        }
+    }
 }
 
 task packageTestImage(type: Zip) {
-    dependsOn buildAndRunGtest
+    dependsOn createTestImage
     archiveFileName = "${project.correttoTestImageArchiveName}.zip"
     from(testResultingImage) {
         include '**'
@@ -96,6 +102,7 @@ task packageDebugSymbols(type: Zip) {
 
 task packageBuildResults(type: Zip) {
     dependsOn packageDebugSymbols
+    dependsOn runGtest
     archiveFileName = "unsigned-jdk-image.zip"
 
     from(jdkResultingImage) {

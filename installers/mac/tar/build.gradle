@@ -101,14 +101,21 @@ task executeTestBuild(type: Exec) {
     commandLine 'make','test-image'
 }
 
-task buildAndRunGtest(type: Exec) {
-    dependsOn executeTestBuild
-    workingDir "$buildRoot"
-    commandLine 'make', 'run-test', 'TEST="gtest:all"'
+task runGtest {
+    dependsOn executeBuild
+    doLast {
+        if (project.gtest != "") {
+            exec {
+                workingDir "$buildRoot"
+                commandLine 'make', 'run-test', 'TEST="gtest:all"'
+            }
+        }
+    }
 }
 
 task prepareArtifacts {
     dependsOn executeBuild
+    dependsOn runGtest
     doLast {
         if(file("${jdkResultingImage}/${correttoMacDir}").exists()) {
             delete "${jdkResultingImage}/${correttoMacDir}"
@@ -207,7 +214,7 @@ task packageDebugSymbols(type: Tar) {
 }
 
 task packageTestResults(type: Tar) {
-    dependsOn buildAndRunGtest
+    dependsOn executeTestBuild
     description 'Package test results'
     archiveFileName = "${project.correttoTestImageArchiveName}.tar.gz"
     compression Compression.GZIP
