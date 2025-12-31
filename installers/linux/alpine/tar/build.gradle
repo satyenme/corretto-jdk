@@ -97,16 +97,15 @@ task configureBuild(type: Exec) {
 
 task executeBuild(type: Exec) {
     dependsOn configureBuild
-    outputs.dir jdkResultingImage
     workingDir "$buildRoot"
-    commandLine 'bash', '-c', "make images ${project.correttoMakeOptions}"
+    commandLine 'make', 'images'
+    outputs.dir jdkResultingImage
 }
 
 task createTestImage(type: Exec) {
     dependsOn executeBuild
-    outputs.dir testResultingImage
     workingDir "$buildRoot"
-    commandLine 'bash', '-c', "make test-image ${project.correttoMakeOptions}"
+    commandLine 'make','test-image'
 }
 
 task bundleThirdPartyBinaries {

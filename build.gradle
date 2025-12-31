@@ -164,8 +164,6 @@ allprojects {
             }
         }
 
-        correttoMakeOptions = project.findProperty("corretto.make_options") ?: ""
-
         // Determine the system architecture
         def jdkArch = ""
         def os = ""
