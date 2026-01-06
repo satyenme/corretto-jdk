@@ -79,6 +79,7 @@ task configureBuild(type: Exec) {
 
 task executeBuild(type: Exec) {
     dependsOn configureBuild
+    outputs.dir jdkResultingImage
     workingDir "$buildRoot"
     commandLine 'make', 'images'
 }
@@ -97,6 +98,7 @@ task executeAdditionalTargets(type: Exec) {
 
 task executeTestBuild(type: Exec) {
     dependsOn executeAdditionalTargets
+    outputs.dir testResultingImage
     workingDir "$buildRoot"
     commandLine 'make','test-image'
 }
