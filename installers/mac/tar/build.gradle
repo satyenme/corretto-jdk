@@ -79,7 +79,7 @@ task configureBuild(type: Exec) {
 
 task executeBuild(type: Exec) {
     dependsOn configureBuild
-    outputs.dir jdkResultingImage
+    // outputs.dir jdkResultingImage
     workingDir "$buildRoot"
     commandLine 'make', 'images'
 }
