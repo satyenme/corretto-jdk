@@ -134,7 +134,7 @@ allprojects {
         switch(project.findProperty("corretto.debug_level")) {
             case null:
             case "release":
-                correttoCommonFlags += ['--with-debug-level=release', '--with-native-debug-symbols=zipped', '--with-external-symbols-in-bundles=full']
+                correttoCommonFlags += ['--with-debug-level=release', '--with-native-debug-symbols=zipped'] // , '--with-external-symbols-in-bundles=full']
                 break
             case "fastdebug":
                 correttoDebugLevel = "fastdebug"
